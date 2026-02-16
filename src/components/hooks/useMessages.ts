@@ -1,5 +1,6 @@
-import { useIntl, FormattedMessage, type MessageDescriptor } from 'react-intl';
-import { messages, labels } from '@/components/messages';
+import { FormattedMessage, type MessageDescriptor, useIntl } from 'react-intl';
+import { labels, messages } from '@/components/messages';
+import type { ApiError } from '@/lib/types';
 
 type FormatMessage = (
   descriptor: MessageDescriptor,
@@ -12,7 +13,7 @@ interface UseMessages {
   messages: typeof messages;
   labels: typeof labels;
   getMessage: (id: string) => string;
-  getErrorMessage: (error: unknown) => string | undefined;
+  getErrorMessage: (error: string | Error | ApiError) => string | undefined;
   FormattedMessage: typeof FormattedMessage;
 }
 
@@ -25,14 +26,18 @@ export function useMessages(): UseMessages {
     return message ? formatMessage(message) : id;
   };
 
-  const getErrorMessage = (error: unknown) => {
+  const getErrorMessage = (error: string | Error | ApiError) => {
     if (!error) {
       return undefined;
     }
 
-    const code = error?.['code'];
+    if (typeof error === 'string') {
+      return error;
+    }
 
-    return code ? getMessage(code) : error?.['message'] || 'Unknown error';
+    const code = (error as ApiError)?.code;
+
+    return code ? getMessage(code) : error?.message || 'Unknown error';
   };
 
   const formatMessage = (

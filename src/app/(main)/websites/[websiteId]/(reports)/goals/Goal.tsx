@@ -1,9 +1,9 @@
-import { Grid, Row, Column, Text, Icon, ProgressBar, Dialog } from '@umami/react-zen';
-import { ReportEditButton } from '@/components/input/ReportEditButton';
+import { Column, Dialog, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useResultQuery } from '@/components/hooks';
 import { File, User } from '@/components/icons';
+import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { Lightning } from '@/components/svg';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { formatLongNumber } from '@/lib/format';
 import { GoalEditForm } from './GoalEditForm';
 
@@ -51,7 +51,7 @@ export function Goal({ id, name, type, parameters, websiteId, startDate, endDate
                   return (
                     <Dialog
                       title={formatMessage(labels.goal)}
-                      variant="modal"
+                      variant="sheet"
                       style={{ minHeight: 300, minWidth: 400 }}
                     >
                       <GoalEditForm id={id} websiteId={websiteId} onClose={close} />

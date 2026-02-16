@@ -1,8 +1,8 @@
+import { useMemo } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useDateRange, useTimezone } from '@/components/hooks';
 import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { PageviewsChart } from '@/components/metrics/PageviewsChart';
-import { useMemo } from 'react';
 
 export function WebsiteChart({
   websiteId,
@@ -22,13 +22,17 @@ export function WebsiteChart({
 
   const chartData = useMemo(() => {
     if (data) {
-      const result = {
+      const result: {
+        pageviews: any[];
+        sessions: any[];
+        compare?: { pageviews: any[]; sessions: any[] };
+      } = {
         pageviews,
         sessions,
       };
 
       if (compare) {
-        result['compare'] = {
+        result.compare = {
           pageviews: result.pageviews.map(({ x }, i) => ({
             x,
             y: compare.pageviews[i]?.y,
